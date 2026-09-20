@@ -61,6 +61,105 @@ export const FUNPAY_NODES = {
   }
 };
 
+export const COMPLIANT_LOT_CONTENT = {
+  lot_cs2_grenades: {
+    summaryRu: '🎯 Полный гайд по раскидкам CS2 (Все соревновательные карты)',
+    summaryEn: '[PRO GUIDE] CS2 Full Grenades Lineups & Smokes (All Maps)',
+    descRu: 'Актуальный интерактивный сборник смоков, флешек и молотовых для соревновательного пула CS2.\nВключает консольные бинды для тренировки.\nБыстрая передача товара лично продавцом в чате заказа!',
+    descEn: 'Complete interactive guide for CS2 smokes, flashes and molotovs on all competitive maps.\nIncludes practice console binds and pro lineups.\nFast personal delivery by seller directly in chat.'
+  },
+  lot_cs2_config_pro: {
+    summaryRu: '⚡ PRO Конфиг CS2 + Оптимизация FPS (Input Lag 0ms) 2026',
+    summaryEn: '[PRO CONFIG] CS2 Autoexec Config & FPS Boost (0ms Input Lag)',
+    descRu: 'Киберспортивный autoexec.cfg с лучшими рейтами саб-тика и параметрами запуска Steam.\nУбирает фризы и повышает плавность стрельбы.\nБыстрая передача товара лично продавцом в чате!',
+    descEn: 'Tier-1 competitive autoexec.cfg with optimal sub-tick network rates and launch options.\nEliminates stutters and maximizes FPS.\nFast manual delivery in chat.'
+  },
+  lot_cs2_coaching: {
+    summaryRu: '🏆 Индивидуальное обучение CS2 от игрока 3000+ ELO Faceit',
+    summaryEn: '[COACHING] CS2 1-on-1 Coaching & Demo Analysis (3000+ ELO)',
+    descRu: 'Персональный разбор вашей демки, позиционирования, таймингов и стрельбы.\nЧек-лист ошибок и карта тренировки аима.\nНапишите в чат после оплаты для согласования времени!',
+    descEn: 'Personal demo review, crosshair placement and positioning training from 3000+ ELO player.\n30-day aim training schedule.\nContact seller in chat to begin.'
+  },
+  lot_dota2_mmr_guide: {
+    summaryRu: '🏆 Гайд: Как соло поднять с 1000 до 6000+ MMR в Dota 2',
+    summaryEn: '[SOLO MMR] Dota 2 Guide: Road from 1000 to 6000+ MMR',
+    descRu: 'Пошаговый план поднятия рейтинга в соло: пул метовых героев и тайминги макро-игры.\nКонтроль рун мудрости (7/14 мин) и Терзателя.\nБыстрая выдача продавцом в чате сразу после оплаты!',
+    descEn: 'Step-by-step solo queue ranking guide with meta hero builds and macro timings.\nWisdom runes and tormentor control tips.\nFast delivery in chat.'
+  },
+  lot_dota2_micro_scripts: {
+    summaryRu: '⚡ PRO Настройки Dota 2: Смарт-касты и Бинды микроконтроля',
+    summaryEn: '[PRO SETTINGS] Dota 2 Settings, Smart Casts & Micro-Control',
+    descRu: 'Конфигурация Quickcast, бинды отдаления камеры и управление суммонами (Meepo, Arc, Chen).\nПолная инструкция по настройке.\nБыстрая передача в чате заказа!',
+    descEn: 'Complete quickcast setup, camera distance tweaks and micro-control binds for Meepo, Arc Warden & Chen.\nSafe and verified for 2026.\nFast delivery in chat.'
+  },
+  lot_val_aim_routine: {
+    summaryRu: '🎯 Программа тренировки аима Valorant (AimLab + Range)',
+    summaryEn: '[AIM ROUTINE] Valorant 20-Min Training (AimLab & Range)',
+    descRu: 'Ежедневный 20-минутный комплекс для роста Headshot % и правильного контр-стрейфа.\nРасчет идеального eDPI.\nБыстрая передача продавцом в чате!',
+    descEn: 'Structured daily aim workout to boost your headshot percentage.\nProper eDPI sensitivity setup and counter-strafing techniques.\nFast delivery in chat.'
+  },
+  lot_val_lineups: {
+    summaryRu: '🏹 Все Лайнапы Valorant (Sova, Viper, Killjoy, Brimstone)',
+    summaryEn: '[LINEUPS] Valorant Lineups Guide (Sova, Viper, Killjoy)',
+    descRu: 'Интерактивная база шок-стрел, молли и ловушек под дефьюз для всех соревновательных карт.\nТочные привязки к прицелу и интерфейсу.\nБыстрая выдача в чате заказа!',
+    descEn: 'Full interactive lineup database for all competitive maps.\nShock darts, molly lineups and setups with exact HUD references.\nFast delivery in chat.'
+  },
+  lot_gta5_money_guide: {
+    summaryRu: '💰 Гайд по фарму $5,000,000 в час в GTA Online (Соло)',
+    summaryEn: '[CASH GUIDE] GTA 5 Online Solo Farm $5M/Hour (Cayo Perico)',
+    descRu: 'Скоростное соло ограбление Cayo Perico за 7 минут + пассивный доход ночного клуба.\n100% легально без читов и риска бана.\nБыстрая передача продавцом в чате!',
+    descEn: 'Solo Cayo Perico 7-minute stealth drainage tunnel route and nightclub passive income guide.\n100% legit and safe from ban.\nFast delivery in chat.'
+  },
+  lot_gta5_rp_starter: {
+    summaryRu: '🚗 Шпаргалка правил и быстрый старт на серверах GTA 5 RP',
+    summaryEn: '[RP GUIDE] GTA 5 RP Starter Guide & Rules Cheatsheet',
+    descRu: 'Ответы на правила собеседований (DM, DB, PG, MG) и синтаксис отыгровок /me и /do во фракции.\nБыстрая передача продавцом в диалоге заказа!',
+    descEn: 'Full answers for server whitelist interviews (DM, DB, PG, MG) and proper /me and /do syntax.\nTop early jobs and tips.\nFast delivery in chat.'
+  },
+  lot_rust_wipe_guide: {
+    summaryRu: '🏕️ Гайд по старту в Rust после вайпа + Анти-рейд бункер',
+    summaryEn: '[SURVIVAL] Rust Wipe Day Start Guide & 2x1 Bunker Base',
+    descRu: 'Маршрут первых 15 минут от пляжа до переработчика + схема постройки бункера 2х1 с пиксель-гэпом.\nБыстрая передача продавцом в чате заказа!',
+    descEn: 'Fast route from the beach to recycler and Tier-2 workbench.\nAnti-raid 2x1 bunker base blueprint with pixel gap defense.\nFast delivery in chat.'
+  },
+  lot_genshin_abyss_guide: {
+    summaryRu: '⭐ Прохождение 12 этажа Витой Бездны на 36★ (F2P отряды)',
+    summaryEn: '[36 STARS] Genshin Impact Spiral Abyss Floor 12 Guide',
+    descRu: 'Бюджетные 4★ сборки (Националка, Гиперблум), ротации способностей и пороги статов.\nИнтерактивная карта ресурсов.\nБыстрая выдача в чате заказа!',
+    descEn: 'Budget F2P team compositions (National, Hyperbloom), minimum stat thresholds and rotations.\nInteractive Teyvat resource map link.\nFast delivery in chat.'
+  },
+  lot_tarkov_loot_maps: {
+    summaryRu: '🎒 Карты лута Escape from Tarkov + Таблица патронов',
+    summaryEn: '[EFT MAPS] Escape from Tarkov Loot Maps & Ammo Ballistics',
+    descRu: 'Интерактивные карты схронов и безопасных выходов со всех локаций Tarkov + баллистика текущего патча.\nБыстрая передача продавцом в чате!',
+    descEn: 'Interactive 3D maps with cache locations, safe extracts and current patch ammo penetration tables.\nFast manual delivery in chat.'
+  },
+  lot_mc_auto_farms: {
+    summaryRu: '⛏️ Сборник схем автоматических ферм Minecraft (1.20+)',
+    summaryEn: '[FARMS] Minecraft Best Automatic Farm Blueprints (1.20+)',
+    descRu: 'Чертежи компактной фермы железа (350+ слитков/час), золота и опыта + база схем Litematica.\nБыстрая выдача в чате заказа!',
+    descEn: 'Compact iron farm (350+ ingots/hour), gold/XP farms and Litematica schematic resources.\nReliable and bug-free.\nFast delivery in chat.'
+  },
+  lot_roblox_trading: {
+    summaryRu: '💎 Гайд по трейдингу и ценностям предметов в Roblox',
+    summaryEn: '[TRADING] Roblox Trading & Value Lists (Blox Fruits, MM2)',
+    descRu: 'Официальные таблицы ценностей (Value List) для Blox Fruits, Pet Simulator 99 и MM2.\nФормулы выгодного обмена.\nБыстрая передача продавцом в чате!',
+    descEn: 'Official item value lists for Blox Fruits, Pet Simulator 99 and MM2.\nFair trade calculator guidelines and scam prevention.\nFast delivery in chat.'
+  },
+  lot_steam_region_guide: {
+    summaryRu: '🌐 Безопасная смена региона Steam (Казахстан / Украина)',
+    summaryEn: '[STEAM] Safe Region Change Tutorial (Kazakhstan/Turkey)',
+    descRu: 'Пошаговый алгоритм смены страны без риска бана аккаунта и способы прямого пополнения кошелька.\nБыстрая передача продавцом в чате!',
+    descEn: 'Step-by-step instructions to change Steam store region safely without account ban.\nDirect wallet top-up methods included.\nFast delivery in chat.'
+  },
+  lot_tg_premium_guide: {
+    summaryRu: '⭐ Как выгодно подключить Telegram Premium и Stars (-50%)',
+    summaryEn: '[TELEGRAM] Telegram Premium & Stars 50% Discount Guide',
+    descRu: 'Официальный метод покупки подписки и звезд через платформу Fragment без наценки AppStore.\n100% легально.\nБыстрая выдача продавцом в чате!',
+    descEn: 'Official method to purchase Telegram Premium and Stars via Fragment using TON cryptocurrency.\n100% safe and legal.\nFast delivery in chat.'
+  }
+};
+
 export function getNodeForLot(lot) {
   const gameMap = FUNPAY_NODES[lot.gameId];
   if (gameMap) {
@@ -233,30 +332,32 @@ export class FunPayClient {
       }
     });
 
-    // Clean single-line summary (FunPay strictly disallows line breaks in summary)
-    const cleanRuSummary = generatedTitle.replace(/[\r\n\t]+/g, ' ').trim().substring(0, 95);
+    // 1. Get compliant content for current lot
+    const preset = COMPLIANT_LOT_CONTENT[lot.id] || {};
 
-    // Prepare clean English translations compliant with FunPay rules (no Cyrillic, 30-95 chars)
-    let enSummary = await translator.translate(cleanRuSummary.replace(/\[.*?\]/g, '').trim(), 'en', 'ru');
-    enSummary = (enSummary || `Guide and tips for ${lot.gameName || 'game'}`).replace(/[\r\n\t]+/g, ' ').trim();
-    enSummary = `[PRO GUIDE] ${enSummary}`.substring(0, 95);
-
-    // Clean descriptions: compress excessive blank lines to avoid 'Слишком много строк'
-    let cleanRuDesc = generatedDescription
-      .replace(/\r\n/g, '\n')
-      .replace(/\n{3,}/g, '\n\n')
+    // 2. Ru Summary: single line, strictly <= 90 chars
+    let cleanRuSummary = (generatedTitle || preset.summaryRu || lot.title)
+      .replace(/[\r\n\t]+/g, ' ')
       .trim();
-
-    let enDesc = await translator.translate(cleanRuDesc, 'en', 'ru');
-    if (!enDesc || enDesc.length < 50) {
-      enDesc = `Detailed walkthrough and instructions for ${lot.gameName || 'game'}. Instant delivery right after payment. Safe and fully verified for current patch. Contact seller in chat for any questions.`;
+    if (cleanRuSummary.length > 90) {
+      cleanRuSummary = cleanRuSummary.substring(0, 87) + '...';
     }
-    enDesc = enDesc.replace(/\r\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
 
-    // Ensure payment message is concise (max 2-3 lines to avoid line limit)
-    const secretUrl = (lot.content || lot.productData || '').match(/https?:\/\/[^\s]+/)?.[0] || 'https://telegra.ph/Guide-Instructions-2026';
-    const paymentMsgRu = `Спасибо за покупку! 🎮\nСсылка на материал:\n${secretUrl}`;
-    const paymentMsgEn = `Thank you for your purchase! 🎮\nYour guide link:\n${secretUrl}`;
+    // 3. En Summary: 100% pure Latin English, <= 90 chars, NO Cyrillic letters
+    let enSummary = preset.summaryEn || `[PRO GUIDE] ${lot.gameName || 'Game'} Complete Guide & Tips 2026`;
+    enSummary = enSummary.replace(/[\r\n\t]+/g, ' ').replace(/[^\x00-\x7F]/g, '').trim().substring(0, 90);
+
+    // 4. Ru Desc: 2-3 concise lines max
+    let cleanRuDesc = preset.descRu || generatedDescription || lot.description;
+    cleanRuDesc = cleanRuDesc.replace(/\r\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+
+    // 5. En Desc: 2-3 concise lines, 100% pure Latin English, NO Cyrillic letters
+    let enDesc = preset.descEn || `Comprehensive guide and tutorial for ${lot.gameName || 'this game'}.\nFast delivery by seller directly in chat.\n100% safe and verified.`;
+    enDesc = enDesc.replace(/[^\x00-\x7F\n]/g, '').replace(/\r\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
+
+    // 6. Payment Message: friendly, no external links
+    const paymentMsgRu = `Спасибо за заказ! 🎮\nПродавец уже на связи и передаст ваш товар прямо в этот чат в течение пары минут. Ожидайте!`;
+    const paymentMsgEn = `Thank you for your order! 🎮\nThe seller is online and will deliver your materials directly in this chat shortly. Please wait!`;
 
     // 3. Build POST parameters matching FunPay's offerSave endpoint
     const params = new URLSearchParams();
