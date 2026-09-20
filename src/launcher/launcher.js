@@ -23,17 +23,19 @@ console.log(`
 
 console.log('\x1b[32m[+] Запуск локального сервера Golden Machine...\x1b[0m');
 
-// Directly import server module to ensure single-process stability and zero path escape issues
 import('../server.js')
-  .then(() => {
-    console.log(`\x1b[36m[+] Открытие панели управления в браузере: ${URL}...\x1b[0m`);
+  .then(async (serverModule) => {
+    const { port } = await serverModule.startServer(PORT);
+    const activeUrl = `http://localhost:${port}`;
+    console.log(`\x1b[36m[+] Открытие панели управления в браузере: ${activeUrl}...\x1b[0m`);
     setTimeout(() => {
-      open(URL).catch((err) => {
-        console.log(`\x1b[33m[*] Откройте в браузере вручную: ${URL}\x1b[0m`);
+      open(activeUrl).catch(() => {
+        console.log(`\x1b[33m[*] Откройте в браузере вручную: ${activeUrl}\x1b[0m`);
       });
-    }, 800);
+    }, 600);
   })
   .catch((err) => {
     console.error('\x1b[31m[-] Ошибка запуска сервера:\x1b[0m', err);
   });
+
 

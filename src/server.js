@@ -268,19 +268,45 @@ app.post('/api/test-order', async (req, res) => {
   }
 });
 
-// Start Server
-server.listen(PORT, () => {
-  console.log(`\n======================================================`);
-  console.log(`👑 GOLDEN MACHINE CORE SERVER RUNNING`);
-  console.log(`🌐 Local Web Dashboard: http://localhost:${PORT}`);
-  console.log(`⚡ WebSocket Stream:    ws://localhost:${PORT}`);
-  console.log(`======================================================\n`);
-  db.addLog('success', `Сервер Golden Machine запущен на порту ${PORT}`);
+// Start Server with auto-fallback to next port if in use
+export function startServer(port = PORT) {
+  return new Promise((resolve) => {
+    const currentPort = parseInt(port) || 3000;
+    
+    server.listen(currentPort, () => {
+      console.log(`\n======================================================`);
+      console.log(`👑 GOLDEN MACHINE CORE SERVER RUNNING`);
+      console.log(`🌐 Local Web Dashboard: http://localhost:${currentPort}`);
+      console.log(`⚡ WebSocket Stream:    ws://localhost:${currentPort}`);
+      console.log(`======================================================\n`);
+      db.addLog('success', `Сервер Golden Machine запущен на порту ${currentPort}`);
 
-  // Automatically check auth if golden_key already exists in db
-  const settings = db.getSettings();
-  if (settings.goldenKey) {
-    funpay.setGoldenKey(settings.goldenKey);
-    funpay.checkAuth().catch(() => {});
-  }
-});
+      // Automatically check auth if golden_key already exists in db
+      const settings = db.getSettings();
+      if (settings.goldenKey) {
+        funpay.setGoldenKey(settings.goldenKey);
+        funpay.checkAuth().catch(() => {});
+      }
+
+      resolve({ server, port: currentPort });
+    });
+
+    server.once('error', (err) => {
+      if (err.code === 'EADDRINUSE') {
+        console.warn(`\x1b[33m[!] Порт ${currentPort} занят, автоматический переход на порт ${currentPort + 1}...\x1b[0m`);
+        server.close();
+        setTimeout(() => {
+          resolve(startServer(currentPort + 1));
+        }, 300);
+      } else {
+        console.error('\x1b[31m[-] Ошибка сервера:\x1b[0m', err);
+      }
+    });
+  });
+}
+
+// Auto-start if run directly
+if (process.argv[1] && process.argv[1].endsWith('server.js')) {
+  startServer(PORT);
+}
+
