@@ -113,7 +113,15 @@ const elements = {
   btnCloseLotModal: document.getElementById('btnCloseLotModal'),
   btnCancelLotModal: document.getElementById('btnCancelLotModal'),
   formCustomLot: document.getElementById('formCustomLot'),
-  toastContainer: document.getElementById('toastContainer')
+  toastContainer: document.getElementById('toastContainer'),
+
+  // Modal Goods
+  modalGoods: document.getElementById('modalGoods'),
+  modalGoodsTitle: document.getElementById('modalGoodsTitle'),
+  modalGoodsContent: document.getElementById('modalGoodsContent'),
+  btnCloseGoodsModal: document.getElementById('btnCloseGoodsModal'),
+  btnCloseGoodsModalBtn: document.getElementById('btnCloseGoodsModalBtn'),
+  btnCopyGoodsContent: document.getElementById('btnCopyGoodsContent')
 };
 
 // Toast notification helper
@@ -338,12 +346,19 @@ function renderLotsGrid() {
       </div>
       <h4 class="lot-title">${lot.title}</h4>
       <p class="lot-desc">${lot.shortDesc || lot.description.substring(0, 100) + '...'}</p>
+      <div class="lot-goods-box" style="margin-top:10px; margin-bottom:12px; padding:8px 10px; background:rgba(255,255,255,0.03); border:1px solid rgba(251,191,36,0.18); border-radius:8px; font-size:11px;">
+        <span style="color:#fbbf24; font-weight:600;"><i class="fa-solid fa-gift"></i> Товар автовыдачи:</span>
+        <div style="color:#9ca3af; margin-top:4px; max-height:42px; overflow:hidden; text-overflow:ellipsis; white-space:pre-line;">${(lot.content || '').substring(0, 110)}...</div>
+      </div>
       <div class="lot-footer">
-        <button class="btn btn-sm btn-outline btn-test-var" data-id="${lot.id}">
+        <button class="btn btn-sm btn-outline btn-view-goods" data-id="${lot.id}" title="Просмотреть выдаваемый товар">
+          <i class="fa-solid fa-eye"></i> Товар
+        </button>
+        <button class="btn btn-sm btn-outline btn-test-var" data-id="${lot.id}" title="Вариации">
           <i class="fa-solid fa-dice"></i> Вариации
         </button>
         <button class="btn btn-sm btn-gold btn-publish-one" data-id="${lot.id}">
-          <i class="fa-solid fa-bolt"></i> Выставить сейчас
+          <i class="fa-solid fa-bolt"></i> Выставить
         </button>
       </div>
     `;
@@ -351,6 +366,18 @@ function renderLotsGrid() {
   });
 
   // Attach buttons
+  document.querySelectorAll('.btn-view-goods').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const lotId = e.currentTarget.getAttribute('data-id');
+      const lot = state.lots.find(l => l.id === lotId);
+      if (lot) {
+        if (elements.modalGoodsTitle) elements.modalGoodsTitle.innerHTML = `<i class="fa-solid fa-gift text-gold"></i> [${lot.gameName}] ${lot.title}`;
+        if (elements.modalGoodsContent) elements.modalGoodsContent.textContent = lot.content || 'Содержимое еще не заполнено.';
+        if (elements.modalGoods) elements.modalGoods.style.display = 'flex';
+      }
+    });
+  });
+
   document.querySelectorAll('.btn-publish-one').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       const lotId = e.currentTarget.getAttribute('data-id');
@@ -744,6 +771,20 @@ elements.formCustomLot.addEventListener('submit', async (e) => {
     fetchLots();
   }
 });
+
+// Modal Goods Events
+if (elements.btnCloseGoodsModal) elements.btnCloseGoodsModal.addEventListener('click', () => elements.modalGoods.style.display = 'none');
+if (elements.btnCloseGoodsModalBtn) elements.btnCloseGoodsModalBtn.addEventListener('click', () => elements.modalGoods.style.display = 'none');
+if (elements.btnCopyGoodsContent) {
+  elements.btnCopyGoodsContent.addEventListener('click', () => {
+    const text = elements.modalGoodsContent.textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('Текст товара скопирован в буфер обмена!', 'success');
+    }).catch(() => {
+      showToast('Не удалось скопировать', 'error');
+    });
+  });
+}
 
 // Clear Logs
 elements.btnClearLogs.addEventListener('click', () => {
