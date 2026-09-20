@@ -347,12 +347,12 @@ function renderLotsGrid() {
       <h4 class="lot-title">${lot.title}</h4>
       <p class="lot-desc">${lot.shortDesc || lot.description.substring(0, 100) + '...'}</p>
       <div class="lot-goods-box" style="margin-top:10px; margin-bottom:12px; padding:8px 10px; background:rgba(255,255,255,0.03); border:1px solid rgba(251,191,36,0.18); border-radius:8px; font-size:11px;">
-        <span style="color:#fbbf24; font-weight:600;"><i class="fa-solid fa-gift"></i> Товар автовыдачи:</span>
+        <span style="color:#fbbf24; font-weight:600;"><i class="fa-solid fa-box-open"></i> Товар для покупателя:</span>
         <div style="color:#9ca3af; margin-top:4px; max-height:42px; overflow:hidden; text-overflow:ellipsis; white-space:pre-line;">${(lot.content || '').substring(0, 110)}...</div>
       </div>
       <div class="lot-footer">
-        <button class="btn btn-sm btn-outline btn-view-goods" data-id="${lot.id}" title="Просмотреть выдаваемый товар">
-          <i class="fa-solid fa-eye"></i> Товар
+        <button class="btn btn-sm btn-outline btn-view-goods" data-id="${lot.id}" title="Посмотреть и скопировать для отправки покупателю">
+          <i class="fa-solid fa-clipboard-list"></i> Товар
         </button>
         <button class="btn btn-sm btn-outline btn-test-var" data-id="${lot.id}" title="Вариации">
           <i class="fa-solid fa-dice"></i> Вариации
