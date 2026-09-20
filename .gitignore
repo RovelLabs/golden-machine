@@ -5,3 +5,6 @@ data/
 dist/
 .DS_Store
 Thumbs.db
+json jay/
+*credentials*.json
+

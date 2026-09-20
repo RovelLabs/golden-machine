@@ -1,0 +1,15 @@
+=== 🎯 COUNTER-STRIKE 2: ПОЛНЫЙ СБОРНИК РАСКИДОК И БИНДОВ 2026 ===
+
+1. ОФИЦИАЛЬНЫЙ ИНТЕРАКТИВНЫЙ 3D-НАВИГАТОР:
+Ссылка: https://csnades.gg/
+- Все карты: Mirage, Inferno, Nuke, Anubis, Dust2, Ancient, Vertigo.
+- Выберите точку A / B / Mid -> тип гранаты (Смок, Молик, Флешка) -> точный прицел с видео-траекторией.
+
+2. СКРИПТ ДЛЯ АВТО-ТРЕНИРОВКИ В ЛОББИ:
+Скопируйте следующие команды в консоль CS2 (~):
+sv_cheats 1; bot_kick; mp_warmup_end; mp_freezetime 0; mp_roundtime_defuse 60; sv_grenade_trajectory_prac_pipreview 1; sv_infinite_ammo 1; bind "alt" "noclip"; bind "c" "+jump; -attack; -jump"
+
+3. ТОПОВЫЕ СМОКИ MIRAGE:
+- Смок в Окно (Window): встать у мусорки на спавне Т -> прицел в верхний левый угол ковра -> W + Jumpthrow.
+- Смок в Старт (Top Mid): встать у стены спавна Т -> прицел по антенне -> Jumpthrow.
+- Смок в Коннектор (Connector): упор в угол ящиков -> прицел по козырьку ковра -> Jumpthrow.
