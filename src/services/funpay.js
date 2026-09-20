@@ -4,18 +4,70 @@ import { db } from '../database/db.js';
 import { translator } from './translator.js';
 
 export const FUNPAY_NODES = {
-  cs2: { nodeId: 1350, name: 'Counter-Strike 2', url: 'https://funpay.com/lots/1350/' },
-  dota2: { nodeId: 81, name: 'Dota 2', url: 'https://funpay.com/lots/81/' },
-  valorant: { nodeId: 612, name: 'Valorant', url: 'https://funpay.com/lots/612/' },
-  gta5: { nodeId: 193, name: 'GTA 5 Online', url: 'https://funpay.com/lots/193/' },
-  rust: { nodeId: 250, name: 'Rust', url: 'https://funpay.com/lots/250/' },
-  genshin: { nodeId: 673, name: 'Genshin Impact', url: 'https://funpay.com/lots/673/' },
-  tarkov: { nodeId: 579, name: 'Escape from Tarkov', url: 'https://funpay.com/lots/579/' },
-  minecraft: { nodeId: 288, name: 'Minecraft', url: 'https://funpay.com/lots/288/' },
-  roblox: { nodeId: 699, name: 'Roblox', url: 'https://funpay.com/lots/699/' },
-  steam: { nodeId: 1086, name: 'Steam', url: 'https://funpay.com/lots/1086/' },
-  telegram: { nodeId: 702, name: 'Telegram', url: 'https://funpay.com/lots/702/' }
+  cs2: {
+    template1_guides: { nodeId: 1351, name: 'Counter-Strike 2 (Прочее / Гайды)', url: 'https://funpay.com/lots/1351/' },
+    template2_boost: { nodeId: 1908, name: 'Counter-Strike 2 (Обучение)', url: 'https://funpay.com/lots/1908/' },
+    template3_free: { nodeId: 1351, name: 'Counter-Strike 2 (Прочее)', url: 'https://funpay.com/lots/1351/' }
+  },
+  dota2: {
+    template1_guides: { nodeId: 504, name: 'Dota 2 (Прочее / Гайды)', url: 'https://funpay.com/lots/504/' },
+    template2_boost: { nodeId: 502, name: 'Dota 2 (Обучение)', url: 'https://funpay.com/lots/502/' },
+    template3_free: { nodeId: 504, name: 'Dota 2 (Прочее)', url: 'https://funpay.com/lots/504/' }
+  },
+  valorant: {
+    template1_guides: { nodeId: 613, name: 'Valorant (Прочее / Гайды)', url: 'https://funpay.com/lots/613/' },
+    template2_boost: { nodeId: 666, name: 'Valorant (Обучение)', url: 'https://funpay.com/lots/666/' },
+    template3_free: { nodeId: 613, name: 'Valorant (Прочее)', url: 'https://funpay.com/lots/613/' }
+  },
+  gta5: {
+    template1_guides: { nodeId: 879, name: 'GTA 5 Online (Прочее / Гайды)', url: 'https://funpay.com/lots/879/' },
+    template2_boost: { nodeId: 88, name: 'GTA 5 Online (Услуги)', url: 'https://funpay.com/lots/88/' },
+    template3_free: { nodeId: 879, name: 'GTA 5 Online (Прочее)', url: 'https://funpay.com/lots/879/' }
+  },
+  rust: {
+    template1_guides: { nodeId: 888, name: 'Rust (Прочее / Гайды)', url: 'https://funpay.com/lots/888/' },
+    template2_boost: { nodeId: 252, name: 'Rust (Услуги)', url: 'https://funpay.com/lots/252/' },
+    template3_free: { nodeId: 888, name: 'Rust (Прочее)', url: 'https://funpay.com/lots/888/' }
+  },
+  genshin: {
+    template1_guides: { nodeId: 1107, name: 'Genshin Impact (Прочее / Гайды)', url: 'https://funpay.com/lots/1107/' },
+    template2_boost: { nodeId: 697, name: 'Genshin Impact (Прокачка)', url: 'https://funpay.com/lots/697/' },
+    template3_free: { nodeId: 1107, name: 'Genshin Impact (Прочее)', url: 'https://funpay.com/lots/1107/' }
+  },
+  tarkov: {
+    template1_guides: { nodeId: 644, name: 'Escape from Tarkov (Прочее / Гайды)', url: 'https://funpay.com/lots/644/' },
+    template2_boost: { nodeId: 1204, name: 'Escape from Tarkov (Обучение)', url: 'https://funpay.com/lots/1204/' },
+    template3_free: { nodeId: 644, name: 'Escape from Tarkov (Прочее)', url: 'https://funpay.com/lots/644/' }
+  },
+  minecraft: {
+    template1_guides: { nodeId: 2054, name: 'Minecraft (Гайды)', url: 'https://funpay.com/lots/2054/' },
+    template2_boost: { nodeId: 223, name: 'Minecraft (Услуги)', url: 'https://funpay.com/lots/223/' },
+    template3_free: { nodeId: 1754, name: 'Minecraft (Конфиги)', url: 'https://funpay.com/lots/1754/' }
+  },
+  roblox: {
+    template1_guides: { nodeId: 402, name: 'Roblox (Прочие игры / Гайды)', url: 'https://funpay.com/lots/402/' },
+    template2_boost: { nodeId: 402, name: 'Roblox (Услуги)', url: 'https://funpay.com/lots/402/' },
+    template3_free: { nodeId: 402, name: 'Roblox (Прочее)', url: 'https://funpay.com/lots/402/' }
+  },
+  steam: {
+    template1_guides: { nodeId: 1009, name: 'Steam (Услуги / Гайды)', url: 'https://funpay.com/lots/1009/' },
+    template2_boost: { nodeId: 1009, name: 'Steam (Услуги)', url: 'https://funpay.com/lots/1009/' },
+    template3_free: { nodeId: 2044, name: 'Steam (Смена региона)', url: 'https://funpay.com/lots/2044/' }
+  },
+  telegram: {
+    template1_guides: { nodeId: 1392, name: 'Telegram (Прочее / Гайды)', url: 'https://funpay.com/lots/1392/' },
+    template2_boost: { nodeId: 703, name: 'Telegram (Услуги)', url: 'https://funpay.com/lots/703/' },
+    template3_free: { nodeId: 1391, name: 'Telegram (Premium)', url: 'https://funpay.com/lots/1391/' }
+  }
 };
+
+export function getNodeForLot(lot) {
+  const gameMap = FUNPAY_NODES[lot.gameId];
+  if (gameMap) {
+    return gameMap[lot.templateType] || gameMap.template1_guides || gameMap.template3_free;
+  }
+  return { nodeId: 1351, name: lot.gameName || 'Прочее', url: 'https://funpay.com/lots/1351/' };
+}
 
 export class FunPayClient {
   constructor() {
@@ -135,17 +187,17 @@ export class FunPayClient {
   }
 
   /**
-   * Publish real offer on FunPay with session management, valid English translations and field auto-filling
+   * Publish real offer on FunPay with session management, valid English translations and exact node mapping
    */
   async publishOfferToFunPay(lot, generatedTitle, generatedDescription, price) {
     if (!this.goldenKey) {
       throw new Error('golden_key не настроен в настройках');
     }
 
-    const nodeInfo = FUNPAY_NODES[lot.gameId] || { nodeId: 1350, name: lot.gameName, url: 'https://funpay.com/lots/1350/' };
+    const nodeInfo = getNodeForLot(lot);
     const nodeId = nodeInfo.nodeId;
 
-    db.addLog('info', `📡 Подготовка формы выставления для FunPay (Раздел: ${nodeInfo.name}, Node ID: ${nodeId})...`);
+    db.addLog('info', `📡 Подготовка публикации в раздел: ${nodeInfo.name} (Node ID: ${nodeId})...`);
 
     // Ensure session is initialized
     if (!this.cookieStore.includes('PHPSESSID')) {
@@ -168,27 +220,43 @@ export class FunPayClient {
     const formSelects = {};
     $('select').each((_, el) => {
       const name = $(el).attr('name');
-      const firstValid = $(el).find('option').filter((_, opt) => $(opt).attr('value') !== '').first().attr('value');
-      if (name && firstValid) formSelects[name] = firstValid;
+      const options = $(el).find('option').map((_, opt) => $(opt).attr('value')).get().filter(v => v !== '');
+      
+      if (name && options.length > 0) {
+        // Smart matching for 'fields[type]'
+        if (name === 'fields[type]') {
+          const guideOpt = options.find(o => /гайд/i.test(o) || /прочее/i.test(o) || /обучение/i.test(o));
+          formSelects[name] = guideOpt || options[0];
+        } else {
+          formSelects[name] = options[0];
+        }
+      }
     });
 
-    // 2. Prepare high-quality, valid English translations compliant with FunPay rules
-    let enSummary = await translator.translate(generatedTitle.replace(/\[.*?\]/g, '').trim(), 'en', 'ru');
-    if (!enSummary || enSummary.length < 10) {
-      enSummary = `Ultimate Guide and Training for ${lot.gameName || 'Game'} 2026`;
+    // Clean single-line summary (FunPay strictly disallows line breaks in summary)
+    const cleanRuSummary = generatedTitle.replace(/[\r\n\t]+/g, ' ').trim().substring(0, 95);
+
+    // Prepare clean English translations compliant with FunPay rules (no Cyrillic, 30-95 chars)
+    let enSummary = await translator.translate(cleanRuSummary.replace(/\[.*?\]/g, '').trim(), 'en', 'ru');
+    enSummary = (enSummary || `Guide and tips for ${lot.gameName || 'game'}`).replace(/[\r\n\t]+/g, ' ').trim();
+    enSummary = `[PRO GUIDE] ${enSummary}`.substring(0, 95);
+
+    // Clean descriptions: compress excessive blank lines to avoid 'Слишком много строк'
+    let cleanRuDesc = generatedDescription
+      .replace(/\r\n/g, '\n')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+
+    let enDesc = await translator.translate(cleanRuDesc, 'en', 'ru');
+    if (!enDesc || enDesc.length < 50) {
+      enDesc = `Detailed walkthrough and instructions for ${lot.gameName || 'game'}. Instant delivery right after payment. Safe and fully verified for current patch. Contact seller in chat for any questions.`;
     }
-    // FunPay max summary length is 100 chars
-    enSummary = `[TOP GUIDE] ${enSummary}`.substring(0, 95);
+    enDesc = enDesc.replace(/\r\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
 
-    let enDesc = await translator.translate(generatedDescription, 'en', 'ru');
-    if (!enDesc || enDesc.length < 40) {
-      enDesc = `Detailed professional walkthrough and manual for ${lot.gameName || 'Game'}. Instant delivery right after payment. 100% working for current 2026 patch. If you have questions, contact seller in chat.`;
-    }
-
-    const secretUrl = (lot.content || lot.productData || '').match(/https?:\/\/[^\s]+/)?.[0] || (lot.content || lot.productData || 'https://telegra.ph/Guide-Instructions-2026');
-
-    const paymentMsgRu = `Спасибо за покупку! 🎮\n\nВаша ссылка на материал:\n${secretUrl}\n\nЕсли у вас возникнут любые вопросы — напишите в этот чат!`;
-    const paymentMsgEn = `Thank you for your purchase! 🎮\n\nYour guide link:\n${secretUrl}\n\nIf you have any questions, feel free to write in this chat!`;
+    // Ensure payment message is concise (max 2-3 lines to avoid line limit)
+    const secretUrl = (lot.content || lot.productData || '').match(/https?:\/\/[^\s]+/)?.[0] || 'https://telegra.ph/Guide-Instructions-2026';
+    const paymentMsgRu = `Спасибо за покупку! 🎮\nСсылка на материал:\n${secretUrl}`;
+    const paymentMsgEn = `Thank you for your purchase! 🎮\nYour guide link:\n${secretUrl}`;
 
     // 3. Build POST parameters matching FunPay's offerSave endpoint
     const params = new URLSearchParams();
@@ -204,9 +272,9 @@ export class FunPayClient {
       params.append(k, v);
     }
 
-    params.append('fields[summary][ru]', generatedTitle.substring(0, 95));
+    params.append('fields[summary][ru]', cleanRuSummary);
     params.append('fields[summary][en]', enSummary);
-    params.append('fields[desc][ru]', generatedDescription);
+    params.append('fields[desc][ru]', cleanRuDesc);
     params.append('fields[desc][en]', enDesc);
     params.append('fields[payment_msg][ru]', paymentMsgRu);
     params.append('fields[payment_msg][en]', paymentMsgEn);
@@ -214,7 +282,7 @@ export class FunPayClient {
     params.append('amount', '1');
     params.append('active', 'on');
 
-    db.addLog('info', `🚀 Отправка данных лота на https://funpay.com/lots/offerSave...`);
+    db.addLog('info', `🚀 Отправка формы на FunPay (раздел: ${nodeInfo.name})...`);
 
     const saveRes = await axios.post(`${this.baseUrl}/lots/offerSave`, params.toString(), {
       headers: {
@@ -235,10 +303,10 @@ export class FunPayClient {
     if (data && data.done === false) {
       const errorMsg = data.errors ? data.errors.map(e => e[1]).join('; ') : (data.error || 'Ошибка FunPay');
       db.addLog('error', `❌ FunPay отклонил публикацию: ${errorMsg}`);
-      throw new Error(`FunPay отклонил: ${errorMsg}`);
+      throw new Error(errorMsg);
     }
 
-    // Extract exact URL for the published lot
+    // Determine actual lot / trade URL
     let lotUrl = `${nodeInfo.url}trade`;
     if (data && data.url) {
       lotUrl = data.url.startsWith('http') ? data.url : `https://funpay.com${data.url}`;
@@ -247,7 +315,8 @@ export class FunPayClient {
     const offerIdMatch = lotUrl.match(/id=(\d+)/) || lotUrl.match(/offer=(\d+)/);
     const offerId = offerIdMatch ? offerIdMatch[1] : ('fp_' + Math.floor(1000000 + Math.random() * 9000000));
 
-    db.addLog('success', `🎉 Лот успешно опубликован на FunPay! Ссылка: ${lotUrl}`);
+    db.addLog('success', `🎉 Лот успешно выставлен на FunPay в раздел "${nodeInfo.name}"!`);
+    db.addLog('success', `🔗 Ссылка на лот: ${lotUrl}`);
 
     return {
       success: true,

@@ -120,49 +120,16 @@ export class ContentGenerator {
    * @param {Object} options 
    */
   async generateDescription(lot, options = {}) {
-    const {
-      language = 'ru',
-      includeBothLanguages = false
-    } = options;
+    const header = `${this.randomChoice(EMOJIS)} ${lot.title} — актуально для патча 2026.`;
+    const coreDesc = (lot.shortDesc || lot.description || '')
+      .replace(/[\r\n]+/g, ' — ')
+      .replace(/\s{2,}/g, ' ')
+      .trim()
+      .substring(0, 250);
+    const safety = `✅ 100% безопасность для аккаунта. Моментальная автовыдача информации.`;
+    const support = `💬 Поддержка в чате 24/7. Отвечу на любые вопросы и подскажу детали!`;
 
-    const gameName = lot.gameName || 'Игры';
-    const subCat = lot.subCategory || 'Цифровой товар';
-
-    const header = `${this.randomChoice(EMOJIS)} ${lot.title} — ${this.randomChoice(ACTION_SUFFIXES)}`;
-    
-    const benefits = [
-      `✅ 100% Рабочий и актуальный материал под текущий патч 2026`,
-      `⚡ Моментальная автоматическая выдача информации сразу после оплаты`,
-      `🛡️ Полная безопасность для вашего игрового аккаунта`,
-      `💬 Бесплатная поддержка и ответы на любые вопросы в чате`
-    ];
-
-    const descriptionBody = lot.description || `${lot.shortDesc || ''}\n\nПодробная информация предоставляется сразу после оплаты.`;
-
-    let ruDescription = [
-      header,
-      '',
-      '📌 ОПИСАНИЕ И ОСОБЕННОСТИ:',
-      descriptionBody,
-      '',
-      '💎 ПОЧЕМУ СТОИТ ВЫБРАТЬ НАС:',
-      ...benefits,
-      '',
-      '🚀 КАК ПОЛУЧИТЬ:',
-      '1. Нажмите кнопку "Купить" и оплатите заказ.',
-      '2. Получите доступ к материалу моментально в этом же чате.',
-      '3. Ознакомьтесь с инструкцией и оставьте отзыв!'
-    ].join('\n');
-
-    if (language === 'en') {
-      return await translator.translate(ruDescription, 'en', 'ru');
-    }
-
-    if (includeBothLanguages) {
-      const enTranslation = await translator.translate(ruDescription, 'en', 'ru');
-      return `${ruDescription}\n\n========================================\n🌐 ENGLISH VERSION:\n========================================\n\n${enTranslation}`;
-    }
-
+    const ruDescription = `${header}\n${coreDesc}\n${safety}\n${support}`;
     return ruDescription;
   }
 
