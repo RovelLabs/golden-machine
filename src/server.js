@@ -18,6 +18,11 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
+wss.on('error', (err) => {
+  if (err.code !== 'EADDRINUSE') {
+    console.error('WebSocketServer error:', err);
+  }
+});
 
 const PORT = process.env.PORT || 3000;
 
