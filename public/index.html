@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Golden Machine — FunPay Automation Suite MVP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-crown"></i>
+        </div>
+        <div class="brand-text">
+          <h2>GOLDEN MACHINE</h2>
+          <span class="badge-version">v1.0 MVP</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#overview" class="nav-item active" data-tab="overview">
+          <i class="fa-solid fa-gauge-high"></i>
+          <span>Дашборд</span>
+        </a>
+        <a href="#account" class="nav-item" data-tab="account">
+          <i class="fa-solid fa-key"></i>
+          <span>FunPay Аккаунт</span>
+          <span class="nav-dot" id="accountStatusDot"></span>
+        </a>
+        <a href="#database" class="nav-item" data-tab="database">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span>База лотов</span>
+          <span class="nav-count" id="navLotsCount">0</span>
+        </a>
+        <a href="#templates" class="nav-item" data-tab="templates">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>3 Шаблона лотов</span>
+        </a>
+        <a href="#generator" class="nav-item" data-tab="generator">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>Генератор & Вариативность</span>
+        </a>
+        <a href="#messages" class="nav-item" data-tab="messages">
+          <i class="fa-solid fa-comments"></i>
+          <span>Авто-выдача покупателю</span>
+        </a>
+        <a href="#settings" class="nav-item" data-tab="settings">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Настройки бота</span>
+        </a>
+        <a href="#terminal" class="nav-item" data-tab="terminal">
+          <i class="fa-solid fa-terminal"></i>
+          <span>Live Консоль</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="server-status-pill">
+          <span class="pulse-indicator"></span>
+          <span id="wsStatusText">Локальный сервер онлайн</span>
+        </div>
+        <a href="https://github.com/RovelLabs/golden-machine" target="_blank" class="github-link">
+          <i class="fa-brands fa-github"></i>
+          <span>RovelLabs / golden-machine</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+      <!-- Top Header Bar -->
+      <header class="top-header">
+        <div class="header-left">
+          <div class="status-badge" id="botStatusBadge">
+            <i class="fa-solid fa-circle-pause"></i>
+            <span id="botStatusText">Авто-выставление неактивно</span>
+          </div>
+          <div class="header-delay-info" id="nextActionTimer" style="display: none;">
+            <i class="fa-regular fa-clock"></i>
+            <span id="timerText">Ожидание...</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <!-- FunPay Account Card Widget -->
+          <div class="user-profile-widget" id="headerUserWidget">
+            <img src="https://funpay.com/img/layout/avatar.png" alt="Avatar" id="userAvatar" class="user-avatar">
+            <div class="user-info">
+              <span class="user-name" id="userName">Не подключен</span>
+              <span class="user-balance" id="userBalance">0.00 ₽</span>
+            </div>
+            <button class="btn-icon" id="btnRefreshAuth" title="Проверить статус FunPay">
+              <i class="fa-solid fa-rotate-right"></i>
+            </button>
+          </div>
+
+          <!-- Master Bot Action Button -->
+          <button class="btn-master-action btn-gold glow-effect" id="btnToggleBot">
+            <i class="fa-solid fa-play"></i>
+            <span id="btnToggleBotText">ЗАПУСТИТЬ БОТА</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Dynamic Tab Content Sections -->
+      <div class="content-body">
+
+        <!-- ==================== TAB 1: OVERVIEW / DASHBOARD ==================== -->
+        <section id="tab-overview" class="tab-pane active">
+          <div class="hero-banner">
+            <div class="hero-content">
+              <h1>👑 Golden Machine Dashboard</h1>
+              <p>Интеллектуальная система авто-выставления лотов, рандомизации из 80,000+ названий и авто-выдачи FunPay</p>
+            </div>
+            <div class="hero-actions">
+              <button class="btn btn-secondary" id="btnQuickBump">
+                <i class="fa-solid fa-angles-up"></i>
+                <span>⚡ Поднять все лоты</span>
+              </button>
+              <button class="btn btn-secondary" id="btnTestOrder">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>💬 Тест авто-выдачи</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Metric Stats Grid -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon gold">
+                <i class="fa-solid fa-database"></i>
+              </div>
+              <div class="stat-details">
+                <span class="stat-label">Лотов в базе</span>
+                <h3 class="stat-value" id="statTotalDbLots">0</h3>
+                <span class="stat-hint">Игры, гайды, буст</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon emerald">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+              </div>
+              <div class="stat-details">
+                <span class="stat-label">Выставлено за сессию</span>
+                <h3 class="stat-value" id="statTotalListed">0</h3>
+                <span class="stat-hint" id="statLastListed">Еще не выставлялось</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon purple">
+                <i class="fa-solid fa-rocket"></i>
+              </div>
+              <div class="stat-details">
+                <span class="stat-label">Автоподнятий лотов</span>
+                <h3 class="stat-value" id="statTotalBumps">0</h3>
+                <span class="stat-hint" id="statLastBump">Авто-таймер активен</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon blue">
+                <i class="fa-solid fa-paper-plane"></i>
+              </div>
+              <div class="stat-details">
+                <span class="stat-label">Авто-сообщений выдано</span>
+                <h3 class="stat-value" id="statTotalMessages">0</h3>
+                <span class="stat-hint">Мгновенный ответ покупателям</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Templates Overview Grid -->
+          <div class="section-title">
+            <h3><i class="fa-solid fa-layer-group"></i> Активные режимы выставления (Шаблоны)</h3>
+          </div>
+          <div class="templates-overview-grid">
+            <div class="tpl-overview-card" id="cardTpl1">
+              <div class="tpl-header">
+                <span class="tpl-badge">Шаблон 1</span>
+                <label class="switch">
+                  <input type="checkbox" id="checkOverviewTpl1" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <h4>🎮 Гайды на разные игры</h4>
+              <p>CS2, Dota 2, Valorant, GTA 5, Rust, Genshin, Tarkov, Minecraft, Roblox и др.</p>
+              <div class="tpl-meta">
+                <span><i class="fa-solid fa-tags"></i> 10+ игр</span>
+                <span><i class="fa-solid fa-bolt"></i> Автовыдача мануалов</span>
+              </div>
+            </div>
+
+            <div class="tpl-overview-card" id="cardTpl2">
+              <div class="tpl-header">
+                <span class="tpl-badge">Шаблон 2</span>
+                <label class="switch">
+                  <input type="checkbox" id="checkOverviewTpl2" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <h4>🏆 Бустеры & Обучение</h4>
+              <p>Коучинг, калибровка, совместная игра, тренировка аима и разбор реплеев.</p>
+              <div class="tpl-meta">
+                <span><i class="fa-solid fa-chalkboard-user"></i> Индивидуальный коучинг</span>
+                <span><i class="fa-solid fa-shield-halved"></i> 100% без читов</span>
+              </div>
+            </div>
+
+            <div class="tpl-overview-card" id="cardTpl3">
+              <div class="tpl-header">
+                <span class="tpl-badge">Шаблон 3</span>
+                <label class="switch">
+                  <input type="checkbox" id="checkOverviewTpl3" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <h4>💎 Свободный шаблон</h4>
+              <p>Любые произвольные цифровые товары, ключи, смена региона Steam, Telegram Premium.</p>
+              <div class="tpl-meta">
+                <span><i class="fa-solid fa-sliders"></i> Полная кастомизация</span>
+                <span><i class="fa-solid fa-globe"></i> RU / EN перевод</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recently Listed Lots Table -->
+          <div class="card mt-4">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-list-check"></i> Журнал выставленных лотов</h3>
+              <button class="btn btn-sm btn-outline" id="btnRefreshListedLots">
+                <i class="fa-solid fa-arrows-rotate"></i> Обновить
+              </button>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="custom-table" id="tableListedLots">
+                  <thead>
+                    <tr>
+                      <th>Время</th>
+                      <th>Игра / Категория</th>
+                      <th>Сгенерированное название (Уникализированное)</th>
+                      <th>Цена</th>
+                      <th>Статус</th>
+                    </tr>
+                  </thead>
+                  <tbody id="listedLotsBody">
+                    <tr>
+                      <td colspan="5" class="text-center text-muted py-4">Лоты еще не выставлялись. Нажмите «Запустить бота» или выставите одиночный лот из базы.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB 2: FUNPAY ACCOUNT ==================== -->
+        <section id="tab-account" class="tab-pane">
+          <div class="page-title-row">
+            <div>
+              <h2>🔑 Подключение к FunPay через Golden Key</h2>
+              <p class="text-muted">Введите токен сессии (куку `golden_key`) для безопасного управления лотами</p>
+            </div>
+          </div>
+
+          <div class="grid-2-col">
+            <!-- Account Settings Card -->
+            <div class="card">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-key gold-text"></i> Токен golden_key</h3>
+              </div>
+              <div class="card-body">
+                <form id="formFunPayAuth">
+                  <div class="form-group">
+                    <label for="inputGoldenKey">Токен golden_key:</label>
+                    <div class="input-with-action">
+                      <input type="password" id="inputGoldenKey" class="form-control" placeholder="Вставьте ваш 32-символьный golden_key">
+                      <button type="button" class="btn-icon" id="btnToggleKeyVisibility">
+                        <i class="fa-solid fa-eye"></i>
+                      </button>
+                    </div>
+                    <small class="form-hint">Токен сохраняется только локально в вашей базе данных `golden_machine_db.json`.</small>
+                  </div>
+
+                  <div class="form-actions mt-3">
+                    <button type="submit" class="btn btn-gold" id="btnSaveAuth">
+                      <i class="fa-solid fa-shield-halved"></i> Сохранить и проверить
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="btnTestMock">
+                      <i class="fa-solid fa-flask"></i> Демо-режим (Без токена)
+                    </button>
+                  </div>
+                </form>
+
+                <div class="auth-status-box mt-4" id="authResultBox" style="display: none;">
+                  <div class="auth-status-content">
+                    <i class="fa-solid fa-circle-check text-success" id="authResultIcon"></i>
+                    <div id="authResultMessage">Статус проверки...</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Instructions & How-To -->
+            <div class="card">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-circle-question blue-text"></i> Как получить golden_key?</h3>
+              </div>
+              <div class="card-body instruction-steps">
+                <div class="step-item">
+                  <span class="step-num">1</span>
+                  <div class="step-text">
+                    <strong>Откройте сайт FunPay</strong>
+                    <p>Перейдите на <a href="https://funpay.com" target="_blank" class="gold-link">funpay.com</a> и войдите в свой аккаунт.</p>
+                  </div>
+                </div>
+                <div class="step-item">
+                  <span class="step-num">2</span>
+                  <div class="step-text">
+                    <strong>Откройте DevTools (F12)</strong>
+                    <p>Нажмите клавишу <code>F12</code> (или <code>Ctrl + Shift + I</code>) в браузере Chrome / Edge / Firefox.</p>
+                  </div>
+                </div>
+                <div class="step-item">
+                  <span class="step-num">3</span>
+                  <div class="step-text">
+                    <strong>Перейдите во вкладку Application / Хранилище</strong>
+                    <p>Откройте раздел <code>Cookies</code> -> <code>https://funpay.com</code>.</p>
+                  </div>
+                </div>
+                <div class="step-item">
+                  <span class="step-num">4</span>
+                  <div class="step-text">
+                    <strong>Скопируйте значение golden_key</strong>
+                    <p>Найдите строку с именем <code>golden_key</code> и скопируйте значение в поле слева.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB 3: LOT DATABASE ==================== -->
+        <section id="tab-database" class="tab-pane">
+          <div class="page-title-row">
+            <div>
+              <h2>📦 База лотов и товаров</h2>
+              <p class="text-muted">Готовые актуальные лоты по топовым играм с автоматической генерацией и выдачей</p>
+            </div>
+            <button class="btn btn-gold" id="btnOpenAddLotModal">
+              <i class="fa-solid fa-plus"></i> Добавить свой лот
+            </button>
+          </div>
+
+          <!-- Filters Bar -->
+          <div class="filters-bar card p-3 mb-4">
+            <div class="filters-row">
+              <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="dbSearchInput" placeholder="Поиск по названию или игре...">
+              </div>
+
+              <div class="filter-group">
+                <label>Шаблон:</label>
+                <select id="dbTemplateFilter" class="form-select">
+                  <option value="">Все шаблоны</option>
+                  <option value="template1_guides">Шаблон 1 (Гайды)</option>
+                  <option value="template2_boost">Шаблон 2 (Буст / Обучение)</option>
+                  <option value="template3_free">Шаблон 3 (Свободный)</option>
+                </select>
+              </div>
+
+              <div class="filter-group">
+                <label>Игра:</label>
+                <select id="dbGameFilter" class="form-select">
+                  <option value="">Все игры</option>
+                  <option value="cs2">Counter-Strike 2</option>
+                  <option value="dota2">Dota 2</option>
+                  <option value="valorant">Valorant</option>
+                  <option value="gta5">GTA 5 / Online</option>
+                  <option value="rust">Rust</option>
+                  <option value="genshin">Genshin Impact</option>
+                  <option value="tarkov">Escape from Tarkov</option>
+                  <option value="minecraft">Minecraft</option>
+                  <option value="roblox">Roblox</option>
+                  <option value="steam">Steam / Цифровые</option>
+                  <option value="telegram">Telegram</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Lots Grid -->
+          <div class="lots-grid" id="databaseLotsGrid">
+            <!-- Dynamically populated -->
+          </div>
+        </section>
+
+        <!-- ==================== TAB 4: TEMPLATES CONFIG ==================== -->
+        <section id="tab-templates" class="tab-pane">
+          <div class="page-title-row">
+            <div>
+              <h2>📑 Настройка 3 Автоматических Шаблонов</h2>
+              <p class="text-muted">Конфигурация префиксов, коэффициентов цен и шаблонов авто-сообщений для каждого типа</p>
+            </div>
+            <button class="btn btn-gold" id="btnSaveTemplates">
+              <i class="fa-solid fa-floppy-disk"></i> Сохранить настройки шаблонов
+            </button>
+          </div>
+
+          <div class="templates-edit-stack">
+            <!-- Template 1 Editor -->
+            <div class="card template-edit-card" id="tplEdit1">
+              <div class="card-header d-flex justify-between align-center">
+                <div class="d-flex align-center gap-3">
+                  <span class="tpl-badge gold">ШАБЛОН 1</span>
+                  <h3>🎮 Гайды на разные игры</h3>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="tplEnabled1" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <div class="card-body">
+                <div class="grid-2-col">
+                  <div>
+                    <div class="form-group">
+                      <label>Префиксы для рандомизации (через запятую):</label>
+                      <input type="text" id="tplPrefixes1" class="form-control" value="🔥 [ТОП-ГАЙД], ⚡ [НОВИНКА 2026], 💎 [ЛУЧШИЙ МАНУАЛ], 🚀 [АВТОВЫДАЧА], ⭐ [PRO СЕКРЕТЫ]">
+                    </div>
+                    <div class="form-group">
+                      <label>Множитель базовой цены:</label>
+                      <input type="number" id="tplPriceMul1" class="form-control" step="0.1" value="1.0" min="0.1">
+                    </div>
+                  </div>
+                  <div>
+                    <div class="form-group">
+                      <label>Шаблон авто-сообщения покупателю:</label>
+                      <textarea id="tplMessage1" class="form-control" rows="4"></textarea>
+                      <small class="form-hint">Переменные: <code>{guide_content}</code>, <code>{lot_name}</code>, <code>{order_id}</code></small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Template 2 Editor -->
+            <div class="card template-edit-card" id="tplEdit2">
+              <div class="card-header d-flex justify-between align-center">
+                <div class="d-flex align-center gap-3">
+                  <span class="tpl-badge purple">ШАБЛОН 2</span>
+                  <h3>🏆 Бустеры / Обучение под разные игры</h3>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="tplEnabled2" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <div class="card-body">
+                <div class="grid-2-col">
+                  <div>
+                    <div class="form-group">
+                      <label>Префиксы для рандомизации (через запятую):</label>
+                      <input type="text" id="tplPrefixes2" class="form-control" value="🏆 [PRO ТРЕНЕР], 🎯 [ОБУЧЕНИЕ 1 НА 1], ⚡ [БЫСТРЫЙ БУСТ], 🛡️ [БЕЗ ЧИТОВ / 100%], 🔥 [РАЗБОР ОШИБОК]">
+                    </div>
+                    <div class="form-group">
+                      <label>Множитель базовой цены:</label>
+                      <input type="number" id="tplPriceMul2" class="form-control" step="0.1" value="1.0" min="0.1">
+                    </div>
+                  </div>
+                  <div>
+                    <div class="form-group">
+                      <label>Шаблон авто-сообщения покупателю:</label>
+                      <textarea id="tplMessage2" class="form-control" rows="4"></textarea>
+                      <small class="form-hint">Переменные: <code>{lot_name}</code>, <code>{username}</code>, <code>{order_id}</code></small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Template 3 Editor -->
+            <div class="card template-edit-card" id="tplEdit3">
+              <div class="card-header d-flex justify-between align-center">
+                <div class="d-flex align-center gap-3">
+                  <span class="tpl-badge blue">ШАБЛОН 3</span>
+                  <h3>💎 Свободный шаблон (Кастомные товары)</h3>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="tplEnabled3" checked>
+                  <span class="slider round"></span>
+                </label>
+              </div>
+              <div class="card-body">
+                <div class="grid-2-col">
+                  <div>
+                    <div class="form-group">
+                      <label>Префиксы для рандомизации (через запятую):</label>
+                      <input type="text" id="tplPrefixes3" class="form-control" value="💎 [ПРЕМИУМ ТОВАР], ⚡ [МОМЕНТАЛЬНО], 🛡️ [ГАРАНТИЯ], 🚀 [АВТО-ВЫДАЧА 24/7]">
+                    </div>
+                    <div class="form-group">
+                      <label>Множитель базовой цены:</label>
+                      <input type="number" id="tplPriceMul3" class="form-control" step="0.1" value="1.0" min="0.1">
+                    </div>
+                  </div>
+                  <div>
+                    <div class="form-group">
+                      <label>Шаблон авто-сообщения покупателю:</label>
+                      <textarea id="tplMessage3" class="form-control" rows="4"></textarea>
+                      <small class="form-hint">Переменные: <code>{product_data}</code>, <code>{order_id}</code></small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB 5: GENERATOR & VARIABILITY ==================== -->
+        <section id="tab-generator" class="tab-pane">
+          <div class="page-title-row">
+            <div>
+              <h2>🎲 Генератор контента & Вариативность (80,000+ вариантов)</h2>
+              <p class="text-muted">Протестируйте уникализацию названий, генерацию описаний и мгновенный автоперевод на английский язык</p>
+            </div>
+          </div>
+
+          <div class="grid-2-col">
+            <!-- Generator Sandbox Controls -->
+            <div class="card">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-sliders"></i> Параметры генератора</h3>
+              </div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label>Выберите тестовый лот из базы:</label>
+                  <select id="genLotSelect" class="form-select"></select>
+                </div>
+
+                <div class="translation-options-box p-3 my-3">
+                  <div class="section-subtitle mb-2">
+                    <i class="fa-solid fa-language gold-text"></i> Мультиязычность и перевод:
+                  </div>
+                  <div class="form-check mb-2">
+                    <input type="checkbox" id="genTranslateEn" checked>
+                    <label for="genTranslateEn">Автоматический перевод на английский (English Translation)</label>
+                  </div>
+                  <div class="form-check">
+                    <input type="checkbox" id="genIncludeBoth" checked>
+                    <label for="genIncludeBoth">Публиковать оба языка (RU + EN в одном описании)</label>
+                  </div>
+                </div>
+
+                <button class="btn btn-gold w-100" id="btnTestGenerate">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Сгенерировать 5 вариаций
+                </button>
+
+                <div class="combinations-counter-badge mt-3">
+                  <i class="fa-solid fa-fire text-warning"></i>
+                  <span>Возможных уникальных вариаций названия: <strong id="genCombCount">88,452</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live Output Preview -->
+            <div class="card">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-eye gold-text"></i> Результаты генерации в реальном времени</h3>
+              </div>
+              <div class="card-body">
+                <div class="preview-block mb-3">
+                  <label class="preview-label">Примеры уникальных названий (Рандомизатор):</label>
+                  <div class="generated-titles-list" id="genTitlesList">
+                    <div class="title-pill">Нажмите «Сгенерировать 5 вариаций» для предпросмотра</div>
+                  </div>
+                </div>
+
+                <div class="preview-block">
+                  <label class="preview-label">Сгенерированное описание лота:</label>
+                  <textarea id="genDescPreview" class="form-control" rows="8" readonly placeholder="Здесь появится структурированное описание..."></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB 6: POST-PURCHASE MESSAGING ==================== -->
+        <section id="tab-messages" class="tab-pane">
+          <div class="page-title-row">
+            <div>
+              <h2>💬 Авто-сообщения & Выдача после покупки</h2>
+              <p class="text-muted">Настройка мгновенной доставки ссылок, ключей и гайдов покупателю сразу после оплаты</p>
+            </div>
+          </div>
+
+          <div class="grid-2-col">
+            <div class="card">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-comment-dots gold-text"></i> Симулятор выдачи заказа</h3>
+              </div>
+              <div class="card-body">
+                <div class="form-group">
+                  <label>Выберите лот для проверки авто-выдачи:</label>
+                  <select id="msgLotSelect" class="form-select"></select>
+                </div>
+                <div class="form-group">
+                  <label>Имя тестового покупателя:</label>
+                  <input type="text" id="msgBuyerName" class="form-control" value="Alex_Gamer2026">
+                </div>
+                <div class="form-actions mt-3">
+                  <button class="btn btn-gold" id="btnPreviewMessage">
+                    <i class="fa-solid fa-eye"></i> Предпросмотр сообщения
+                  </button>
+                  <button class="btn btn-secondary" id="btnSimulateOrderSend">
+                    <i class="fa-solid fa-paper-plane"></i> Симулировать оплату заказа
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <h3><i class="fa-solid fa-message blue-text"></i> Как видит сообщение покупатель</h3>
+              </div>
+              <div class="card-body">
+                <div class="chat-bubble-preview" id="chatMessagePreview">
+                  <div class="chat-header">
+                    <span class="chat-bot-name">🤖 Golden Machine Auto-Delivery</span>
+                    <span class="chat-time">Только что</span>
+                  </div>
+                  <div class="chat-body" id="chatMessageText">
+                    Выберите лот и нажмите «Предпросмотр сообщения»...
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB 7: BOT SETTINGS ==================== -->
+        <section id="tab-settings" class="tab-pane">
+          <div class="page-title-row">
+            <div>
+              <h2>⚙️ Настройки бота и безопасности</h2>
+              <p class="text-muted">Тонкая настройка интервалов, анти-бан алгоритмов и авто-поднятия</p>
+            </div>
+            <button class="btn btn-gold" id="btnSaveAllSettings">
+              <i class="fa-solid fa-floppy-disk"></i> Сохранить настройки
+            </button>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-shield-halved text-success"></i> Анти-бан & Интервалы выставления</h3>
+            </div>
+            <div class="card-body">
+              <div class="grid-2-col">
+                <div class="form-group">
+                  <label>Минимальная задержка между лотами (сек):</label>
+                  <input type="number" id="setDelayMin" class="form-control" value="15" min="5" max="300">
+                  <small class="form-hint">Рекомендуется: не менее 15 секунд.</small>
+                </div>
+                <div class="form-group">
+                  <label>Максимальная задержка между лотами (сек):</label>
+                  <input type="number" id="setDelayMax" class="form-control" value="45" min="10" max="600">
+                  <small class="form-hint">Случайная пауза между лотами предотвращает подозрительную активность.</small>
+                </div>
+              </div>
+
+              <div class="form-check mt-3">
+                <input type="checkbox" id="setAntiBanMode" checked>
+                <label for="setAntiBanMode"><strong>Включить Safe-Mode (Случайная вариация интервалов + Spintax)</strong></label>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-angles-up text-warning"></i> Авто-поднятие лотов (Auto-Bump)</h3>
+            </div>
+            <div class="card-body">
+              <div class="grid-2-col">
+                <div class="form-group">
+                  <label>Интервал авто-поднятия (в минутах):</label>
+                  <input type="number" id="setBumpInterval" class="form-control" value="120" min="15" max="720">
+                  <small class="form-hint">Стандартное время отката поднятия на FunPay — 2-4 часа (120-240 мин).</small>
+                </div>
+                <div class="d-flex align-center">
+                  <div class="form-check">
+                    <input type="checkbox" id="setAutoBumpActive" checked>
+                    <label for="setAutoBumpActive">Автоматически поднимать лоты по расписанию</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ==================== TAB 8: LIVE TERMINAL ==================== -->
+        <section id="tab-terminal" class="tab-pane">
+          <div class="page-title-row">
+            <div>
+              <h2>📜 Live Консоль событий</h2>
+              <p class="text-muted">Потоковый вывод действий бота, публикаций, ошибок и ответов в реальном времени</p>
+            </div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-sm btn-outline" id="btnClearLogs">
+                <i class="fa-solid fa-trash-can"></i> Очистить
+              </button>
+            </div>
+          </div>
+
+          <div class="terminal-card">
+            <div class="terminal-header">
+              <div class="terminal-controls">
+                <span class="control red"></span>
+                <span class="control yellow"></span>
+                <span class="control green"></span>
+              </div>
+              <span class="terminal-title">golden-machine-core.log</span>
+              <div class="terminal-right-meta">
+                <span id="logCountBadge">0 записей</span>
+              </div>
+            </div>
+            <div class="terminal-body" id="terminalLogsContainer">
+              <div class="log-line info">
+                <span class="log-time">[System]</span>
+                <span class="log-msg">Ожидание событий...</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal: Add / Edit Custom Lot -->
+  <div class="modal-overlay" id="modalLot" style="display: none;">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="modalLotTitle">Добавить новый лот в базу</h3>
+        <button class="btn-close-modal" id="btnCloseLotModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="formCustomLot">
+          <div class="grid-2-col">
+            <div class="form-group">
+              <label>Название игры / сервиса:</label>
+              <input type="text" id="lotInputGame" class="form-control" placeholder="например, Counter-Strike 2" required>
+            </div>
+            <div class="form-group">
+              <label>Тип шаблона:</label>
+              <select id="lotInputTemplate" class="form-select" required>
+                <option value="template1_guides">Шаблон 1 (Гайды)</option>
+                <option value="template2_boost">Шаблон 2 (Буст / Обучение)</option>
+                <option value="template3_free">Шаблон 3 (Свободный)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Базовое название лота:</label>
+            <input type="text" id="lotInputTitle" class="form-control" placeholder="например, Секретный гайд по трейдингу" required>
+            <small class="form-hint">Генератор автоматически добавит десятки тысяч уникальных префиксов и тегов при выставлении.</small>
+          </div>
+
+          <div class="grid-2-col">
+            <div class="form-group">
+              <label>Цена (₽):</label>
+              <input type="number" id="lotInputPrice" class="form-control" value="99" min="1" required>
+            </div>
+            <div class="form-group">
+              <label>Подкатегория:</label>
+              <input type="text" id="lotInputSubCategory" class="form-control" placeholder="Гайды / Обучение">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Описание лота:</label>
+            <textarea id="lotInputDesc" class="form-control" rows="3" placeholder="Подробное описание товара или услуги..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Содержимое для авто-выдачи (ссылка/текст/ключ):</label>
+            <textarea id="lotInputContent" class="form-control" rows="2" placeholder="Текст или ссылка, которая будет автоматически отправлена покупателю после оплаты"></textarea>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="btnCancelLotModal">Отмена</button>
+            <button type="submit" class="btn btn-gold">Сохранить лот</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

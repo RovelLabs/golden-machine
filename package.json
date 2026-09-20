@@ -1,0 +1,29 @@
+{
+  "name": "golden-machine",
+  "version": "1.0.0",
+  "description": "Golden Machine - MVP FunPay Automation Suite with Lot Generator and Launcher",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "launcher": "node src/launcher/launcher.js",
+    "dev": "node --watch src/server.js"
+  },
+  "keywords": [
+    "funpay",
+    "automation",
+    "bot",
+    "lots",
+    "golden-machine"
+  ],
+  "author": "RovelLabs",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "cheerio": "^1.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "open": "^10.1.0",
+    "ws": "^8.18.0"
+  }
+}
