@@ -266,16 +266,23 @@ function renderAll() {
 }
 
 function updateUserUI() {
+  const profileBtn = document.getElementById('btnOpenFunPayProfile');
   if (state.user && state.user.username) {
     elements.userName.textContent = state.user.username;
     elements.userBalance.textContent = state.user.balance || '0 ₽';
     elements.userAvatar.src = state.user.avatar || 'https://funpay.com/img/layout/avatar.png';
     elements.accountStatusDot.classList.add('connected');
+    if (profileBtn && state.user.profileUrl) {
+      profileBtn.href = state.user.profileUrl;
+    }
   } else {
     elements.userName.textContent = 'Не подключен';
     elements.userBalance.textContent = '0.00 ₽';
     elements.userAvatar.src = 'https://funpay.com/img/layout/avatar.png';
     elements.accountStatusDot.classList.remove('connected');
+    if (profileBtn) {
+      profileBtn.href = 'https://funpay.com';
+    }
   }
 }
 
@@ -347,10 +354,12 @@ function renderLotsGrid() {
   document.querySelectorAll('.btn-publish-one').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       const lotId = e.currentTarget.getAttribute('data-id');
-      showToast('Публикация лота на FunPay...', 'info');
+      showToast('Отправка лота на FunPay...', 'info');
       const res = await apiPost('/api/autolister/publish-single', { lotId });
       if (res.success) {
-        showToast(`Лот выставлен: ${res.listed.title}`, 'success');
+        const link = res.listed.lotUrl || (state.user ? state.user.profileUrl : 'https://funpay.com');
+        showToast(`✅ Лот выставлен! <a href="${link}" target="_blank" style="color:#fbbf24; text-decoration:underline; font-weight:bold; margin-left:6px;">[🔗 Открыть на FunPay]</a>`, 'success');
+        fetchListedLots();
       } else {
         showToast(`Ошибка: ${res.error}`, 'error');
       }
@@ -372,19 +381,32 @@ function renderListedLotsTable() {
   tbody.innerHTML = '';
 
   if (state.listedLots.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">Лоты еще не выставлялись. Нажмите «Запустить бота» или выставите одиночный лот из базы.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-4">Лоты еще не выставлялись. Нажмите «Запустить бота» или выставите одиночный лот из базы.</td></tr>';
     return;
   }
 
-  state.listedLots.slice(0, 10).forEach(item => {
+  state.listedLots.slice(0, 15).forEach(item => {
     const tr = document.createElement('tr');
     const time = new Date(item.listedAt).toLocaleTimeString();
+    const lotLink = item.lotUrl || item.categoryUrl || 'https://funpay.com';
+    const profileLink = item.profileUrl || (state.user ? state.user.profileUrl : 'https://funpay.com');
+
     tr.innerHTML = `
       <td><span class="text-dim">${time}</span></td>
       <td><strong>${item.gameName}</strong></td>
       <td>${item.title}</td>
       <td><span class="gold-text font-weight-bold">${item.price} ₽</span></td>
       <td><span class="badge-version text-success">Активен</span></td>
+      <td>
+        <div class="d-flex gap-2">
+          <a href="${lotLink}" target="_blank" class="btn btn-sm btn-gold" title="Открыть лот или категорию на FunPay">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Открыть
+          </a>
+          <a href="${profileLink}" target="_blank" class="btn btn-sm btn-outline" title="Проверить в моем профиле FunPay">
+            <i class="fa-solid fa-user"></i> Профиль
+          </a>
+        </div>
+      </td>
     `;
     tbody.appendChild(tr);
   });
